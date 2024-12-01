@@ -48,11 +48,23 @@ player = pygame.Rect(settings.player_x,
 player_y_velocity = 0
 is_jumping = False
 
+
+
+
 # Main game loop
 running = True
 clock = pygame.time.Clock()
 
 while running:
+    keys = pygame.key.get_pressed()
+
+        # Move the square based on arrow keys
+    if keys[pygame.K_SPACE]:
+        if not is_jumping:
+            player_y_velocity = -settings.jump_velocity
+            is_jumping = True
+            print('a')
+
 
     # Handle events, such as quitting the game
     for event in pygame.event.get():
@@ -60,12 +72,12 @@ while running:
             running = False
 
     # Continuously jump. If the player is not jumping, initialize a new jump
-    if is_jumping is False:
+    #if is_jumping is False:
         # Jumping means that the player is going up. The top of the 
         # screen is y=0, and the bottom is y=SCREEN_HEIGHT. So, to go up,
         # we need to have a negative y velocity
-        player_y_velocity = -settings.jump_velocity
-        is_jumping = True
+        #player_y_velocity = -settings.jump_velocity
+        #is_jumping = True
 
     # Update player position. Gravity is always pulling the player down,
     # which is the positive y direction, so we add GRAVITY to the y velocity

@@ -13,7 +13,7 @@ pygame.init()
 
 # Constants
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
-SQUARE_SIZE = 50
+SQUARE_SIZE = 10
 SQUARE_COLOR = (0, 128, 255) # Red-Green-Blue color in the range 0-255
 BACKGROUND_COLOR = (255, 255, 255) # White
 SQUARE_SPEED = 5
@@ -49,13 +49,13 @@ def main():
         keys = pygame.key.get_pressed()
 
         # Move the square based on arrow keys
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_a]:
             square_x -= SQUARE_SPEED
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             square_x += SQUARE_SPEED
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_w]:
             square_y -= SQUARE_SPEED
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_s]:
             square_y += SQUARE_SPEED
 
         # Prevent the square from going off the screen
@@ -65,11 +65,11 @@ def main():
         # This will clear the screen by filling it 
         # with the background color. If we didn't do this, 
         # the square would leave a trail behind it.
-        screen.fill(BACKGROUND_COLOR)
+        #screen.fill(BACKGROUND_COLOR)
+
 
         # Draw the square
-        pygame.draw.rect(screen, SQUARE_COLOR, (square_x, square_y, SQUARE_SIZE, SQUARE_SIZE))
-
+        pygame.draw.circle(screen, SQUARE_COLOR, (square_x, square_y), 20, SQUARE_SIZE )
         # Update the display. Imagine that the screen is two different whiteboards. One
         # whiteboard is currently visible to the player, and the other whiteboard is being
         # drawn on. When you call pygame.display.flip(), it's like taking the whiteboard
@@ -77,7 +77,6 @@ def main():
         # that was visible to the player and giving it to the artist to draw on. This makes
         # it so that the player never sees the drawing process, only the final result.
         pygame.display.flip()
-
         # Cap the frame rate. This makes the game run at a consistent speed on all computers.
         clock.tick(FPS)
 
