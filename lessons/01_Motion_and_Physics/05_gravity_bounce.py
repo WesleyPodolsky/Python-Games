@@ -46,21 +46,42 @@ clock = pygame.time.Clock()
 
 while running:
 
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_SPACE]:
+            if not is_jumping:
+                player_y_velocity = -settings.jump_y_velocity
+                player_x_velocity = settings.jump_x_velocity * x_direction
+        
+                is_jumping = True
+        
+                print('a')
+
+    if not is_jumping:
+        if keys[pygame.K_d]:
+            x_direction = 1
+        elif keys[pygame.K_a]:
+            x_direction = -1
+        
+    if player_x_velocity > 0.1:
+            player_x_velocity = player_x_velocity -0.2
+
+    if player_x_velocity < -0.1:
+            player_x_velocity = player_x_velocity + 0.2
+
+
+
     # Handle events, such as quitting the game
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
     # Continuously jump. If the player is not jumping, make it jump
-    if is_jumping is False:
-        # Jumping means that the player is going up. The top of the 
-        # screen is y=0, and the bottom is y=settings.screen_height. So, to go up,
-        # we need to have a negative y velocity
+    # if is_jumping is False:
+    #     # Jumping means that the player is going up. The top of the 
+    #     # screen is y=0, and the bottom is y=settings.screen_height. So, to go up,
+    #     # we need to have a negative y velocity
         
-        player_y_velocity = -settings.jump_y_velocity
-        player_x_velocity = settings.jump_x_velocity * x_direction
-        
-        is_jumping = True
         
     else: # the player is jumping
         # Update player position. Gravity is always pulling the player down,

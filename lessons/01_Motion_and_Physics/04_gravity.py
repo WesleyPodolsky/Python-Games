@@ -71,6 +71,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        
+
     # Continuously jump. If the player is not jumping, initialize a new jump
     #if is_jumping is False:
         # Jumping means that the player is going up. The top of the 

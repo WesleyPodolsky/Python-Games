@@ -27,7 +27,7 @@ PURPLE = (203, 0, 255)
 RED = (237, 28, 36)
 ORANGE = (255, 149, 14)
 
-SCREEN = display.set_mode((800, 600))
+SCREEN = display.set_mode((1300, 1200))
 FONT = FONT_PATH + "space_invaders.ttf"
 IMG_NAMES = [
     "ship",
