@@ -8,7 +8,12 @@ objects.
 import math
 
 import pygame
-
+#--------------------------------#
+### SET THE COLOR HERE ###
+turtclr = 'red'
+### SET THE PEN STATUS HERE ###
+pendraw = 'True'
+#--------------------------------#
 
 def event_loop():
     """Wait until user closes the window"""
@@ -38,13 +43,20 @@ class Turtle:
         # Update the turtle's position
         self.x += dx
         self.y -= dy
+    
 
         # Draw line to the new position
-        pygame.draw.line(self.screen, black, (start_x, start_y), (self.x, self.y), 2)
+        if pendraw:
+            pygame.draw.line(self.screen, turtclr, (start_x, start_y), (self.x, self.y), 2)
+            print('drew')
 
     def left(self, angle):
         # Turn left by adjusting the angle counterclockwise
         self.angle = (self.angle + angle) % 360
+
+    def right(self, angle):
+        # Turn right* by adjusting the angle clockwise*
+        self.angle = (self.angle - angle) % 360
 
 
 # Main loop
@@ -61,17 +73,26 @@ pygame.display.set_caption("Turtle Style Drawing")
 white = (255, 255, 255)
 black = (0, 0, 0)
 
+
+
+def getpos(turle: Turtle):
+        print(f" X: {turle.x}  Y: {turle.y}")
+
+
+
 screen.fill(white)
 turtle = Turtle(screen, screen.get_width() // 2, screen.get_height() // 2)  # Start at the center of the screen
 
 # Draw a square using turtle-style commands
-for _ in range(4):
-    turtle.forward(100)  # Move forward by 100 pixels
-    turtle.left(90)  # Turn left by 90 degrees
+if pendraw == 'True':
+    for _ in range(4):
+        turtle.forward(100)  # Move forward by 100 pixels
+        turtle.right(90)  # Turn left by 90 degrees
 
-# Display the drawing
-pygame.display.flip()
+    # Display the drawing
+    pygame.display.flip()
 
+getpos(turtle)
 # Wait to quit
 event_loop()
 

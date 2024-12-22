@@ -74,18 +74,23 @@ class Game:
 class Player:
     """Player class, just a bouncing rectangle"""
 
-    def __init__(self, game: Game):
+    def __init__(self, game: Game, velocity: float, startx: int, starty: int, color: str,):
         self.game = game
+        self.velocity = velocity
+        self.startx = startx
+        self.starty = starty
+        self.color = color
+
         settings = game.settings
 
         self.width = settings.player_width
         self.height = settings.player_height
       
         self.is_jumping = False
-        self.v_jump = settings.player_jump_velocity
+        self.v_jump = self.velocity
 
-        self.y = settings.player_start_y if settings.player_start_y is not None else settings.height - self.height
-        self.x = settings.player_start_x
+        self.y = self.starty if self.starty is not None else settings.height - self.height
+        self.x = self.startx
         
         self.v_x = settings.player_v_x  # X Velocity
         self.v_y = settings.player_v_y  # Y Velocity
@@ -125,14 +130,26 @@ class Player:
             self.is_jumping = True
 
     def draw(self, screen):
-        pygame.draw.rect(screen, Colors.BLACK, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
 
 settings = GameSettings()
 game = Game(settings)
 
-p1 = Player(game)
+p1 = Player(game, 10, 0, 250, 'orange')
+p2 = Player(game,15, 100, 100, 'red')
+p3 = Player(game, 5, 200, 50, 'gold')
+p4 = Player(game,12, -50, 300, 'purple')
+p5 = Player(game, 13, 10, 0, 'blue')
+p6 = Player(game,17, 350, 200, 'green')
+
+
 game.add_player(p1)
+game.add_player(p2)
+game.add_player(p3)
+game.add_player(p4)
+game.add_player(p5)
+game.add_player(p6)
 
 
 game.run()

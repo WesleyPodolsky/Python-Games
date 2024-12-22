@@ -32,7 +32,8 @@ class Parent(Person):
 
     def add_child(self, child: Person):
         """Adds a child to the parent's list of children."""
-        self.children.append(child)
+        self.children.append(child.name)
+    
         
 
     def say_hello(self, message: str):
@@ -71,19 +72,24 @@ dad = Parent("Bob", 40, mom,)
 charlie = Child("Charlie", 10, [mom, dad])
 dahlia = Child("Dahlia", 8, [mom, dad])
 
-# Connect the children to the parents
+#Connect the children to the parents
 mom.add_child(charlie)
 mom.add_child(dahlia)
 dad.add_child(charlie)
 dad.add_child(dahlia)
 
 
-mom.say_hello("Hello!") # Call the say_hello method of the mom object
-print()
-dahlia.say_hello("Yo!")
+# mom.say_hello("Hello!") # Call the say_hello method of the mom object
+# print()
+# dahlia.say_hello("Yo!")
 
-print(dahlia.name + " " + dahlia.lastname)
-print(charlie.name + " " + charlie.lastname)
-print(mom.name + " " + mom.lastname)
-print(dad.name + " " + dad.lastname)
+# print(dahlia.name + " " + dahlia.lastname)
+# print(charlie.name + " " + charlie.lastname)
+# print(mom.name + " " + mom.lastname)
+# print(dad.name + " " + dad.lastname)
+# print(dahlia.parents)
+ 
+def printfam():
+    print('The mom is ' + str(mom.name) + '. The dad is ' + str(mom.spouse.name) + '. The children are ' + str(mom.children))
 
+printfam()
