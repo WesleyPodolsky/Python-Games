@@ -18,24 +18,19 @@ Vector20, draw_v20, draw_grid = Vector20Factory(screen_width, screen_height, 20)
 draw_grid(screen)
 
 # Create some vectors
-v0 = Vector20(0,0)
+v0 = Vector20(0, 0)
+v1 = Vector20(5, 0)  
+v2 = Vector20(0, 5)  
+v3 = Vector20(-5, 0)  
+v4 = Vector20(0, -5) 
 
-v1 = Vector20(0, 5)  
-v1.rotate_ip(90)
 
-v2 = Vector20(5,0)
-v2.rotate_ip(90)
+start = v0
+start = draw_v20(screen, start, v1)
+start = draw_v20(screen, start, v2)
+start = draw_v20(screen, start, v3)
+start = draw_v20(screen, start, v4)
 
-v3 = Vector20(0,-5)
-v2.rotate_ip(90)
-
-v4 = Vector20(5,5)
-v2.rotate_ip(90)
-
-start = draw_v20(screen, v0, v1)
-start = draw_v20(screen, v1, v2)
-start = draw_v20(screen, v2, v3)
-start = draw_v20(screen, v3, v4)
 
 
 
