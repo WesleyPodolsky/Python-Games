@@ -9,7 +9,7 @@ understandable, and makes it easier to add more complex features to the game.
 """
 import pygame
 from dataclasses import dataclass
-
+from jtlgames.vector20 import Vector20Factory
 
 class Colors:
     """Constants for Colors"""
@@ -20,7 +20,8 @@ class Colors:
     BACKGROUND_COLOR = (255, 255, 255)
 
 
-v_thrust = pygame.Vector2(10, -5)
+v_thrust = pygame.Vector2(1, -5)
+v_shoot = pygame.Vector2(0, -5)
 
 
 @dataclass
@@ -87,6 +88,9 @@ class Game:
 
         pygame.quit()
 
+screen = pygame.display.set_mode((GameSettings.width, GameSettings.height))
+pygame.display.set_caption("Vector with Arrow")
+Vector20, draw_v20, draw_grid = Vector20Factory(GameSettings.width, GameSettings.height, 20)
 
 class Player:
     """Player class, just a bouncing rectangle"""
@@ -136,17 +140,25 @@ class Player:
         return self.vel.x > 0
     
 
-
+####update input#######
+####update input#######
+####update input#######
+####update input#######
 
 
     def update_input(self):
         print('ADD THE TWO VECTORS HERE')
         self.vel = self.vel
         self.vel += v_thrust
+        draw_v20(screen, (self.pos.y-250, self.pos.x-250), v_thrust)
 
     
 
-
+####update input#######
+####update input#######
+####update input#######
+####update input#######
+####update input#######
 
 
     # Location Fuctions
@@ -220,12 +232,14 @@ class Player:
     def update_jump(self):
         """Handle the player's jumping logic"""
         
+    
         # Notice that we've gotten rid of self.is_jumping, because we can just
         # check if the player is at the bottom. 
 
         # if self.at_bottom():
         #     self.vel += self.v_jump
          
+    
 
     def draw(self, screen):
         pygame.draw.rect(screen, Colors.PLAYER_COLOR, (self.pos.x, self.pos.y, self.width, self.height))
@@ -233,10 +247,19 @@ class Player:
         if keys[pygame.K_SPACE]:
             print('spoce')
             Player.update_input(self)
+        # draw_v20(screen, self.pos, v_thrust)
+        
+        
 
 
-
-
+pygame.display.flip()
 settings = GameSettings()
 game = Game(settings)
 game.run()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+pygame.quit()
