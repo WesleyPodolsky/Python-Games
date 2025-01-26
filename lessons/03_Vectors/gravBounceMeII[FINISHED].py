@@ -20,8 +20,8 @@ class Colors:
     BACKGROUND_COLOR = (255, 255, 255)
 
 
-v_thrust = pygame.Vector2(1, -5)
-v_shoot = pygame.Vector2(0, -5)
+v_thrust = pygame.Vector2(5, -25)
+v_movel =  pygame.Vector2(1, 1)
 
 
 @dataclass
@@ -149,9 +149,9 @@ class Player:
     def update_input(self):
         print('ADD THE TWO VECTORS HERE')
         self.vel = self.vel
-        self.vel += v_thrust
-        draw_v20(screen, (self.pos.y-250, self.pos.x-250), v_thrust)
-
+        self.vel += v_thrust/5
+        draw_v20(screen, (self.pos.x-250, self.pos.y-250), v_thrust)
+        
     
 
 ####update input#######
@@ -242,11 +242,34 @@ class Player:
     
 
     def draw(self, screen):
+        global v_thrust
+        if self.pos.y == 480:
+            self.drag = self.vel * 0.4
+        self.vel = self.vel - self.drag
+        end_position = self.pos + v_thrust
+        pygame.draw.line(screen, 'red', (self.pos.x +7, self.pos.y), (end_position.x+7, end_position.y), 2)
         pygame.draw.rect(screen, Colors.PLAYER_COLOR, (self.pos.x, self.pos.y, self.width, self.height))
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
-            print('spoce')
-            Player.update_input(self)
+            if self.pos.y == 480:
+                print('spoce')
+                Player.update_input(self)
+        if keys[pygame.K_RIGHT]:
+            print('>')
+            v_thrust.rotate_ip(10)
+        if keys[pygame.K_UP]:
+            print('^')
+            v_thrust.scale_to_length(v_thrust.length() + 5)
+        if keys[pygame.K_DOWN]:
+            print('v')
+            v_thrust.scale_to_length(v_thrust.length() - 5)
+        if keys[pygame.K_LEFT]:
+            print('<')
+            v_thrust.rotate_ip(-10)
+    
+
+        
+            
         # draw_v20(screen, self.pos, v_thrust)
         
         
