@@ -21,8 +21,8 @@ class Colors:
 
 
 v_thrust = pygame.Vector2(5, -25)
-v_movel =  pygame.Vector2(1, 1)
-
+v_movel =  pygame.Vector2(30, 1)
+middle = 250,250
 
 @dataclass
 class GameSettings:
@@ -81,7 +81,7 @@ class Game:
 
             player.update()
 
-            self.screen.fill(Colors.BACKGROUND_COLOR)
+            #self.screen.fill(Colors.BACKGROUND_COLOR)
             player.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(self.settings.frame_rate)
@@ -124,7 +124,9 @@ class Player:
     # self.vel.x < 0, but writing "self.going_left()" is a lot easier to read and
     # understand, it makes the code self-documenting. 
 
-    
+    def gotomiddle(self):
+        self.pos.x=350
+        self.pos.y=200
 
 
     def going_up(self):
@@ -149,16 +151,20 @@ class Player:
 ####update input#######
 ####update input#######
 
+    def vec_to_center(self):
+        global v_tomiddle
+        v_tomiddle = pygame.Vector2(250-self.pos.x/self.pos.x-250, 250-self.pos.y/self.pos.y-250)
 
     def update_input(self):
         print('ADD THE TWO VECTORS HERE')
         self.vel = self.vel
-        self.vel += v_thrust/5
-        draw_v20(screen, (self.pos.x-250, self.pos.y-250), v_thrust)
+        v_tomiddle = pygame.Vector2(250-self.pos.x, 250-self.pos.y)/500
+        self.vel += v_tomiddle
+        #draw_v20(screen, (self.pos.x-250, self.pos.y-250), v_thrust)
+        pygame.draw.circle(screen, 'red', (self.pos.x,self.pos.y), 5, 25)
         
     
-    def vec_to_center(self):
-        v_tomiddle = pygame.Vector2(250-self.pos.x, 250-self.pos.y)
+    
 
             
 ####update input#######
@@ -199,21 +205,21 @@ class Player:
     def update_v(self):
         """Update the player's velocity based on gravity and bounce on edges"""
          
-        self.vel += self.game.gravity  # Add gravity to the velocity
+        #self.vel += self.game.gravity  # Add gravity to the velocity
 
-        if self.at_bottom() and self.going_down():
-            self.vel.y = 0
+        # if self.at_bottom() and self.going_down():
+        #     self.vel.y = 0
 
-        if self.at_top() and self.going_up():
-            self.vel.y = -self.vel.y # Bounce off the top. 
+        # if self.at_top() and self.going_up():
+        #     self.vel.y = -self.vel.y # Bounce off the top. 
 
-        # If the player hits one side of the screen or the other, bounce the
-        # player. we are also checking if the player has a velocity going farther
-        # off the screeen, because we don't want to bounce the player if it's
-        # already going away from the edge
+        # # If the player hits one side of the screen or the other, bounce the
+        # # player. we are also checking if the player has a velocity going farther
+        # # off the screeen, because we don't want to bounce the player if it's
+        # # already going away from the edge
         
-        if (self.at_left() and self.going_left() ) or ( self.at_right() and self.going_right()):
-            self.vel.x = -self.vel.x
+        # if (self.at_left() and self.going_left() ) or ( self.at_right() and self.going_right()):
+        #     self.vel.x = -self.vel.x
             
     def update_pos(self):
         """Update the player's position based on velocity"""
@@ -222,19 +228,19 @@ class Player:
         # If the player is at the bottom, stop the player from falling and
         # stop the jump
         
-        if self.at_bottom():
-            self.pos.y = self.game.settings.height - self.height
+        # if self.at_bottom():
+        #     self.pos.y = self.game.settings.height - self.height
 
-        if self.at_top():
-            self.pos.y = 0
+        # if self.at_top():
+        #     self.pos.y = 0
 
-        # Don't let the player go off the left side of the screen
-        if self.at_left():
-            self.pos.x = 0
+        # # Don't let the player go off the left side of the screen
+        # if self.at_left():
+        #     self.pos.x = 0
   
-        # Don't let the player go off the right side of the screen
-        elif self.at_right():
-            self.pos.x = self.game.settings.width - self.width
+        # # Don't let the player go off the right side of the screen
+        # elif self.at_right():
+        #     self.pos.x = self.game.settings.width - self.width
 
     def update_jump(self):
         """Handle the player's jumping logic"""
@@ -249,19 +255,20 @@ class Player:
     
 
     def draw(self, screen):
+        Player.update_input(self)
         global v_thrust
-        if self.pos.y == 480:
-            self.drag = self.vel * 0.4
-        self.vel = self.vel - self.drag
-        end_position = self.pos + v_thrust
-        pygame.draw.line(screen, 'red', (self.pos.x +7, self.pos.y), (end_position.x+7, end_position.y), 2)
+        # if self.pos.y == 480:
+        #     self.drag = self.vel * 0.4
+        # self.vel = self.vel - self.drag
+        #pygame.draw.line(screen, 'red', (self.pos.x +7, self.pos.y), (250, 250), 2)
+        pygame.draw.circle(screen, 'green', (250,250), 50, 25)
         
-        pygame.draw.rect(screen, Colors.PLAYER_COLOR, (self.pos.x, self.pos.y, self.width, self.height))
+        #pygame.draw.rect(screen, Colors.PLAYER_COLOR, (self.pos.x, self.pos.y, self.width, self.height))
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
             if self.pos.y == 480:
                 print('spoce')
-                Player.update_input(self)
+            Player.update_input(self)
         if keys[pygame.K_RIGHT]:
             print('>')
             v_thrust.rotate_ip(10)
@@ -276,15 +283,16 @@ class Player:
             v_thrust.rotate_ip(-10)
         if keys[pygame.K_j]:
             print('test')
-            #calculate line
-            v_tomiddle = pygame.Vector2(250-self.pos.x, 250-self.pos.y)
-            draw_v20(screen, self.pos, v_tomiddle)
-            #draw seperate line
-            v_tomiddle = pygame.Vector2(500-self.pos.x, 500-self.pos.y)
-            pygame.draw.line(screen, 'green', self.pos, v_tomiddle, 3) 
+            v_movel = pygame.Vector2(1,0)
             #go torwards it using vector seperately <broken>
             self.vel = self.vel
-            self.vel += v_tomiddle
+            self.vel += v_movel
+        if keys[pygame.K_k]:
+
+            print('reL')
+            v_movel = pygame.Vector2(0,-5)
+            #go torwards it using vector seperately <broken>
+            Player.gotomiddle(self)
             
         # draw_v20(screen, self.pos, v_thrust)
         
