@@ -89,6 +89,7 @@ class Spaceship(pygame.sprite.Sprite):
 
         if keys[pygame.K_LEFT]:
             self.angle -= 5
+            
 
         if keys[pygame.K_RIGHT]:
             self.angle += 5
@@ -96,16 +97,22 @@ class Spaceship(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE] and self.ready_to_shoot():
             self.fire_projectile()
 
+        if keys[pygame.K_UP]:
+            vectorchange = pygame.Vector2(0,0)
+            vectorchange.from_polar((0.05, self.angle+270))
+            self.velocity += vectorchange
+
+
         self.image = pygame.transform.rotate(self.original_image, -self.angle)
 
         # Reassigning the rect because the image has changed.
         self.rect = self.image.get_rect(center=self.rect.center)
         
         self.rect.center += self.velocity
-
         # Dont forget this part! If you don't call the Sprite update method, the
         # sprite will not be drawn
         super().update()
+        
 
     # WAIT! Where is the draw method? We don't need to define it because the
     # Sprite class already has a draw method that will draw the image on the
