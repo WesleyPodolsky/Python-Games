@@ -37,6 +37,7 @@ player_speed = 5
 OBSTACLE_WIDTH = 20
 OBSTACLE_HEIGHT = 20
 obstacle_speed = 5
+obstaclals_doged = 0
 
 # Font
 font = pygame.font.SysFont(None, 36)
@@ -59,6 +60,16 @@ class Obstacle(pygame.sprite.Sprite):
         # Remove the obstacle if it goes off screen
         if self.rect.right < 0:
             self.kill()
+            obstaclals_doged += 1
+            #######
+            #######
+            #######
+            #######
+            #OBSITCAL DODGED ADD SCORE HERE NEXT CLASS###
+            #######
+            #######
+            #######
+            #######
 
     def explode(self):
         """Replace the image with an explosition image."""
@@ -79,19 +90,41 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 50
         self.rect.y = HEIGHT - PLAYER_SIZE - 10
         self.speed = player_speed
+        self.vel = 0
+        self.isjumping = False
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            self.rect.y -= self.speed
-        if keys[pygame.K_DOWN]:
-            self.rect.y += self.speed
+        if keys[pygame.K_SPACE]:
+            if self.isjumping == False:
+                self.isjumping = True
+                self.vel = 15
+
+
 
         # Keep the player on screen
+
+            
+        
+       
+
+        if self.vel > -20 and self.isjumping:
+            self.vel -= 1
+            self.rect.y -= self.vel
+            
+        print(self.isjumping)
+        print(self.rect.y)
+
+        if self.rect.y > 295:
+            self.rect.y = 295
+            
         if self.rect.top < 0:
             self.rect.top = 0
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
+            self.isjumping = False
+        
+        
 
 # Create a player object
 player = Player()
@@ -153,7 +186,8 @@ def game_loop():
         obstacles.draw(screen)
 
         # Display obstacle count
-        obstacle_text = font.render(f"Obstacles: {obstacle_count}", True, BLACK)
+        global obstaclals_doged
+        obstacle_text = font.render(f"Obstacles: {obstaclals_doged}", True, BLACK)
         screen.blit(obstacle_text, (10, 10))
 
         pygame.display.update()

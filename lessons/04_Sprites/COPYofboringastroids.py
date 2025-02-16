@@ -106,7 +106,15 @@ class Spaceship(pygame.sprite.Sprite):
             vectorchange.from_polar((0.05, self.angle+270))
             self.velocity += vectorchange
 
+        if self.rect.centerx < 0:
+            self.rect.centerx = 600
+        if self.rect.centery < 0:
+            self.rect.centery = 600
 
+        if self.rect.centerx > 600:
+            self.rect.centerx = 0
+        if self.rect.centery > 600:
+            self.rect.centery = 0
         self.image = pygame.transform.rotate(self.original_image, -self.angle)
 
         # Reassigning the rect because the image has changed.
@@ -160,6 +168,15 @@ class Projectile(pygame.sprite.Sprite):
     def update(self):
         self.rect.center += self.velocity
 
+        if self.rect.centerx < 0:
+                self.kill()
+        if self.rect.centery < 0:
+                self.kill()
+
+        if self.rect.centerx > 600:
+                self.kill()
+        if self.rect.centery > 600:
+                self.kill()
 
 class Game:
     """Class to manage the game loop and objects."""
@@ -211,7 +228,7 @@ class Game:
     def run(self):
         """Main Loop for the game."""
         
-       
+    
         
         while self.running:
             self.handle_events()
