@@ -9,11 +9,13 @@ but it does not. It's a work in progress, and you'll have to finish it.
 import pygame
 import random
 from pathlib import Path
-
+passedobj = 0
 # Initialize Pygame
 pygame.init()
-
+global game_over
+game_over = False
 images_dir = Path(__file__).parent / "images" if (Path(__file__).parent / "images").exists() else Path(__file__).parent / "assets"
+assets = Path(__file__).parent / "images"
 
 # Screen dimensions
 WIDTH, HEIGHT = 600, 300
@@ -29,19 +31,33 @@ WHITE = (255, 255, 255)
 FPS = 60
 
 # Player attributes
-PLAYER_SIZE = 25
+PLAYER_SIZE = 50
 
 player_speed = 5
 
 # Obstacle attributes
-OBSTACLE_WIDTH = 20
-OBSTACLE_HEIGHT = 20
+OBSTACLE_WIDTH = 25
+OBSTACLE_HEIGHT = 45
 obstacle_speed = 5
 obstaclals_doged = 0
 
 # Font
 font = pygame.font.SysFont(None, 36)
 
+class Button():
+    def __init__(self):
+        print('button class')
+        self.butx = 10
+        self.buty = 10
+        self.butwid = 10
+        self.buthigh = 10
+
+        def custom_button(custombutx, custombuty, custombutwid,custombuthigh):
+            print("making a custom button")
+            self.butx = custombutx
+            self.buty = custombuty
+            self.buthigh = custombuthigh
+            self.butwid = custombutwid
 
 # Define an obstacle class
 class Obstacle(pygame.sprite.Sprite):
@@ -54,22 +70,22 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.y = HEIGHT - OBSTACLE_HEIGHT - 10
 
         self.explosion = pygame.image.load(images_dir / "explosion1.gif")
+        self.cactus = pygame.image.load(images_dir / "cactus_9.png")
+
+        self.image = self.cactus
+        self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
+        self.rect = self.image.get_rect(center=self.rect.center)
+
+        
 
     def update(self):
         self.rect.x -= obstacle_speed
         # Remove the obstacle if it goes off screen
         if self.rect.right < 0:
             self.kill()
-            obstaclals_doged += 1
-            #######
-            #######
-            #######
-            #######
-            #OBSITCAL DODGED ADD SCORE HERE NEXT CLASS###
-            #######
-            #######
-            #######
-            #######
+            global passedobj
+            passedobj += 1
+            
 
     def explode(self):
         """Replace the image with an explosition image."""
@@ -78,7 +94,11 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = self.explosion
         self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
         self.rect = self.image.get_rect(center=self.rect.center)
+        global game_over
+        game_over = True
+        
 
+    
 
 # Define a player class
 class Player(pygame.sprite.Sprite):
@@ -93,6 +113,14 @@ class Player(pygame.sprite.Sprite):
         self.vel = 0
         self.isjumping = False
 
+        self.dino = pygame.image.load(images_dir / "dino_0.png")
+
+        self.image = self.dino
+        self.image = pygame.transform.scale(self.image, (PLAYER_SIZE, PLAYER_SIZE))
+        self.rect = self.image.get_rect(center=self.rect.center)
+
+
+
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
@@ -100,10 +128,10 @@ class Player(pygame.sprite.Sprite):
                 self.isjumping = True
                 self.vel = 15
 
-
+    
 
         # Keep the player on screen
-
+    
             
         
        
@@ -123,12 +151,15 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
             self.isjumping = False
+
         
-        
+
 
 # Create a player object
 player = Player()
 player_group = pygame.sprite.GroupSingle(player)
+
+
 
 # Add obstacles periodically
 def add_obstacle(obstacles):
@@ -149,13 +180,14 @@ def add_obstacle(obstacles):
 # Main game loop
 def game_loop():
     clock = pygame.time.Clock()
-    game_over = False
+    
     last_obstacle_time = pygame.time.get_ticks()
 
     # Group for obstacles
     obstacles = pygame.sprite.Group()
 
     player = Player()
+    player_group.add(player)
 
     obstacle_count = 0
 
@@ -182,19 +214,28 @@ def game_loop():
        
         # Draw everything
         screen.fill(WHITE)
-        pygame.draw.rect(screen, BLUE, player)
+        #pygame.draw.rect(screen, BLUE, player)
         obstacles.draw(screen)
+        player_group.draw(screen)
 
         # Display obstacle count
         global obstaclals_doged
-        obstacle_text = font.render(f"Obstacles: {obstaclals_doged}", True, BLACK)
+        obstacle_text = font.render(f"Obstacles: {passedobj}", True, BLACK)
         screen.blit(obstacle_text, (10, 10))
 
+
+    
         pygame.display.update()
         clock.tick(FPS)
 
     # Game over screen
-    screen.fill(WHITE)
+    if game_over == True:
+        screen.fill(WHITE)
+ 
+
+
+
+
 
 if __name__ == "__main__":
     game_loop()
