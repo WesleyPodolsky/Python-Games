@@ -26,6 +26,7 @@ pygame.display.set_caption("Dino Jump")
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GREY = (150, 150, 150)
 
 # FPS
 FPS = 60
@@ -44,20 +45,8 @@ obstaclals_doged = 0
 # Font
 font = pygame.font.SysFont(None, 36)
 
-class Button():
-    def __init__(self):
-        print('button class')
-        self.butx = 10
-        self.buty = 10
-        self.butwid = 10
-        self.buthigh = 10
 
-        def custom_button(custombutx, custombuty, custombutwid,custombuthigh):
-            print("making a custom button")
-            self.butx = custombutx
-            self.buty = custombuty
-            self.buthigh = custombuthigh
-            self.butwid = custombutwid
+
 
 # Define an obstacle class
 class Obstacle(pygame.sprite.Sprite):
@@ -140,8 +129,8 @@ class Player(pygame.sprite.Sprite):
             self.vel -= 1
             self.rect.y -= self.vel
             
-        print(self.isjumping)
-        print(self.rect.y)
+        print("Jumping: " + str(self.isjumping)+ " Y: " +str(self.rect.y))
+
 
         if self.rect.y > 295:
             self.rect.y = 295
@@ -177,6 +166,8 @@ def add_obstacle(obstacles):
     return 0
 
 
+
+
 # Main game loop
 def game_loop():
     clock = pygame.time.Clock()
@@ -185,13 +176,14 @@ def game_loop():
 
     # Group for obstacles
     obstacles = pygame.sprite.Group()
+  
 
     player = Player()
     player_group.add(player)
 
     obstacle_count = 0
 
-    while not game_over:
+    while game_over == False:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -223,14 +215,17 @@ def game_loop():
         obstacle_text = font.render(f"Obstacles: {passedobj}", True, BLACK)
         screen.blit(obstacle_text, (10, 10))
 
+      
+
 
     
         pygame.display.update()
         clock.tick(FPS)
 
     # Game over screen
-    if game_over == True:
-        screen.fill(WHITE)
+    
+    
+
  
 
 
@@ -239,3 +234,24 @@ def game_loop():
 
 if __name__ == "__main__":
     game_loop()
+    
+while True:
+    if game_over == True:
+        screen.fill(WHITE)
+
+
+
+
+
+        # Working Custom Button (requires import pygame)
+
+        def custom_button(custombutx, custombuty, custombutwid,custombuthigh,color,custombuttext,txtcolor):
+            pygame.draw.rect(screen, color, (custombutx, custombuty, custombuthigh, custombutwid))
+            buttontext = font.render(custombuttext, True, txtcolor)
+            screen.blit(buttontext, (custombutx+((custombuthigh-141.89)/2), custombuty+((custombutwid-21.67)/2)))
+        
+        # Custom Button Parameters: (x, y, width, height, color, text, textcolor)
+        #--------------------------------------------------------#
+        custom_button(220,100,60,150,'grey',"New Button",'black')
+        pygame.display.update()
+        #--------------------------------------------------------#
