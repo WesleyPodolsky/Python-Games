@@ -10,6 +10,7 @@ import pygame
 import random
 from pathlib import Path
 passedobj = 0
+i=0
 # Initialize Pygame
 pygame.init()
 global game_over
@@ -160,9 +161,10 @@ def add_obstacle(obstacles):
     # obstacles, but not too close together. 
     
     if random.random() < 0.4:
-        obstacle = Obstacle()
-        obstacles.add(obstacle)
-        return 1
+        if game_over == False:
+            obstacle = Obstacle()
+            obstacles.add(obstacle)
+            return 1
     return 0
 
 
@@ -182,49 +184,85 @@ def game_loop():
     player_group.add(player)
 
     obstacle_count = 0
+    while True:
+        while game_over == False:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
 
-    while game_over == False:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+            # Update player
+            player.update()
 
-        # Update player
-        player.update()
+            # Add obstacles and update
+            if pygame.time.get_ticks() - last_obstacle_time > 500:
+                last_obstacle_time = pygame.time.get_ticks()
+                obstacle_count += add_obstacle(obstacles)
+            
+            obstacles.update()
 
-        # Add obstacles and update
-        if pygame.time.get_ticks() - last_obstacle_time > 500:
-            last_obstacle_time = pygame.time.get_ticks()
-            obstacle_count += add_obstacle(obstacles)
+            # Check for collisions
+            collider = pygame.sprite.spritecollide(player, obstacles, dokill=False)
+            if collider:
+                collider[0].explode()
         
-        obstacles.update()
+            # Draw everything
+            screen.fill(WHITE)
+            #pygame.draw.rect(screen, BLUE, player)
+            obstacles.draw(screen)
+            player_group.draw(screen)
 
-        # Check for collisions
-        collider = pygame.sprite.spritecollide(player, obstacles, dokill=False)
-        if collider:
-            collider[0].explode()
-       
-        # Draw everything
-        screen.fill(WHITE)
-        #pygame.draw.rect(screen, BLUE, player)
-        obstacles.draw(screen)
-        player_group.draw(screen)
+            # Display obstacle count
+            global obstaclals_doged
+            obstacle_text = font.render(f"Obstacles: {passedobj}", True, BLACK)
+            screen.blit(obstacle_text, (10, 10))
 
-        # Display obstacle count
-        global obstaclals_doged
-        obstacle_text = font.render(f"Obstacles: {passedobj}", True, BLACK)
-        screen.blit(obstacle_text, (10, 10))
-
-      
+        
 
 
-    
-        pygame.display.update()
-        clock.tick(FPS)
+        
+            pygame.display.update()
+            clock.tick(FPS)
 
-    # Game over screen
-    
-    
+        # Game over screen
+        
+        while game_over == True:
+            screen.fill(WHITE)
+
+
+
+
+
+            # Working Custom Button (requires import pygame)
+            def custom_button(custombutx, custombuty, custombutwid,custombuthigh,color,custombuttext,txtcolor):
+                pygame.draw.rect(screen, color, (custombutx, custombuty, custombuthigh, custombutwid))
+                buttontext = font.render(custombuttext, True, txtcolor)
+                screen.blit(buttontext, (custombutx+((custombuthigh-141.89)/2), custombuty+((custombutwid-21.67)/2)))
+
+            
+
+                if pygame.mouse.get_pos()[0] > custombutx:
+                    if pygame.mouse.get_pos()[0] < custombutx+custombuthigh:
+                        if pygame.mouse.get_pos()[1] > custombuty:
+                            if pygame.mouse.get_pos()[1] < custombuty+custombutwid:
+                                print('on button')
+                                if pygame.mouse.get_pressed()[0] == True:
+                                    global game_over
+                                    game_over = False
+                                    #obstacles.kill
+            
+            # Custom Button Parameters: (x, y, width, height, color, text, textcolor)
+            #--------------------------------------------------------#
+            for eveny in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    print(pygame.mouse.get_pos())
+            print(pygame.mouse.get_focused())   
+            custom_button(220,100,60,150,'grey',"New Button",'black')
+            pygame.display.update()
+            clock.tick(60)
+        #--------------------------------------------------------#
+        
+
 
  
 
@@ -235,23 +273,5 @@ def game_loop():
 if __name__ == "__main__":
     game_loop()
     
-while True:
-    if game_over == True:
-        screen.fill(WHITE)
 
-
-
-
-
-        # Working Custom Button (requires import pygame)
-
-        def custom_button(custombutx, custombuty, custombutwid,custombuthigh,color,custombuttext,txtcolor):
-            pygame.draw.rect(screen, color, (custombutx, custombuty, custombuthigh, custombutwid))
-            buttontext = font.render(custombuttext, True, txtcolor)
-            screen.blit(buttontext, (custombutx+((custombuthigh-141.89)/2), custombuty+((custombutwid-21.67)/2)))
-        
-        # Custom Button Parameters: (x, y, width, height, color, text, textcolor)
-        #--------------------------------------------------------#
-        custom_button(220,100,60,150,'grey',"New Button",'black')
-        pygame.display.update()
-        #--------------------------------------------------------#
+    
