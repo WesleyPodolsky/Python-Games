@@ -55,7 +55,7 @@ class Obstacle(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((OBSTACLE_WIDTH, OBSTACLE_HEIGHT), pygame.SRCALPHA)
         self.image.fill(BLACK)
-        self.rect = self.image.get_rect()
+        self.rect = pygame.Rect(100,200,10,10)
         self.rect.x = WIDTH
         self.rect.y = HEIGHT - OBSTACLE_HEIGHT - 10
 
@@ -66,8 +66,7 @@ class Obstacle(pygame.sprite.Sprite):
 
         self.image = self.cactus
         self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
-        self.rect = self.image.get_rect(center=self.rect.center)
-
+        self.rect = pygame.Rect(500,210,50,75)
         
 
     def update(self):
@@ -225,17 +224,19 @@ def game_loop():
 
                 return b1 == b2 == b3
 
-            for obstacle in obstacles:
+            # for obstacle in obstacles:
                 
+            #     collision = player.mask.overlap(obstacle.mask, (obstacle.rect.x-player.rect.x, obstacle.rect.y - player.rect.y))
+            #     print(collision) 
                 
+            #     pygame.draw.rect(screen, BLUE, obstacle)
 
-                collision = player.mask.overlap(obstacle.mask, (obstacle.rect.x-player.rect.x, obstacle.rect.y - player.rect.y))
-                print(collision) 
-                
-
-                if collision != None:
+            #     if collision != None:
                     
-                    obstacle.explode()
+            #         obstacle.explode()
+            collider = pygame.sprite.spritecollide(player, obstacles, dokill=False)
+            if collider:
+                collider[0].explode()
 
             # Check for collisions
               
@@ -256,6 +257,9 @@ def game_loop():
             
             for obstacle in obstacles:
                 pygame.draw.circle(screen, 'red', (obstacle.rect.x, obstacle.rect.y), 10)
+                pygame.draw.rect(screen, BLUE, obstacle)
+                
+                
 
         
 
@@ -285,6 +289,7 @@ def game_loop():
 
 
 
+
 class Button():
     def __init__(self, butx, buty, butwid, buthigh, butcolor, buttext, buttxtcolor):
         self.butx = 220
@@ -305,6 +310,7 @@ class Button():
                 return True
             else:
                 return False
+        
                                     
 
         

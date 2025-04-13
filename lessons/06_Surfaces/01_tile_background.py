@@ -10,7 +10,8 @@ pygame.init()
 
 from pathlib import Path
 assets = Path(__file__).parent / 'images'
-
+BLUE = (0, 0, 255)
+colors = ['blue','red', 'yellow', 'green', 'pink', 'orange']
 # Set up display
 screen_width = 600
 screen_height = 600
@@ -46,8 +47,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    color_surface = pygame.Surface((100,600)) 
+    
+
     screen.blit(background,(0,0))
 
+    for i in range(7):
+        screen.blit(color_surface,((i-1)*100, 0))
+        chosen_color = colors[i-1]
+        color_surface.fill(chosen_color)
     # Update the display
     pygame.display.flip()
 
