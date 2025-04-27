@@ -5,6 +5,7 @@ from pathlib import Path
 images = Path(__file__).parent / 'images'
 
 
+
 def scale_sprites(sprites, scale):
     """Scale a list of sprites by a given factor.
 
@@ -45,6 +46,26 @@ def main():
     frames_per_image = 6
     frame_count = 0
 
+
+
+
+    class Frog(pygame.sprite.Sprite):
+
+        def __init__(self):
+            super().__init__()
+
+
+            self.rect = frog_sprites[0].get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
+
+        def frog_jump():
+            global frog_index
+            frog_index = 0
+            return frog_index
+
+            
+
+
     # Main game loop
     running = True
     
@@ -81,10 +102,15 @@ def main():
         frame_count += 1
         
         if frame_count % frames_per_image == 0: 
-            frog_index = (frog_index + 1) % len(frog_sprites)
+            if frog_index < 2:
+                frog_index = (frog_index + 1) % len(frog_sprites)
             allig_index = (allig_index + 1) % len(allig_sprites)
-        
         # Get the current sprite and display it in the middle of the screen
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+                Frog.frog_jump()
+                frog_index = 0
 
         
         screen.blit(frog_sprites[frog_index], sprite_rect)

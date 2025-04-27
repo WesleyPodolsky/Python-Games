@@ -52,12 +52,17 @@ while running:
 
     screen.blit(background,(0,0))
 
-    for i in range(7):
-        screen.blit(color_surface,((i-1)*100, 0))
+    for i in range(6):
         chosen_color = colors[i-1]
         color_surface.fill(chosen_color)
+        screen.blit(color_surface,((i)*100, 0))
+   
     # Update the display
     pygame.display.flip()
+
+    
+        
+
 
 # Quit Pygame
 pygame.quit()
