@@ -46,7 +46,32 @@ def main():
     frames_per_image = 6
     frame_count = 0
 
+    class Gator(pygame.sprite.Sprite):
 
+        def __init__(self):
+            super().__init__()
+
+
+            self.rect = pygame.Rect(100,100,100,100)
+
+
+        def gator_update(self):
+            print(self.rect)
+            print(frog.rect)
+            
+            if self.rect.x < frog.rect.x:
+                self.rect.x += 0.5
+                print('1')
+            if self.rect.x >= frog.rect.x:
+                self.rect.x -= 1
+                print('2')
+            if self.rect.y >= frog.rect.y:
+                self.rect.y -= 1
+                print('3')
+            if self.rect.y < frog.rect.y:
+                self.rect.y += 0.5
+                print('4')
+          
 
 
     class Frog(pygame.sprite.Sprite):
@@ -56,19 +81,41 @@ def main():
 
 
             self.rect = frog_sprites[0].get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-
+            self.jump = 19
+            self.move=0
 
         def frog_jump():
             global frog_index
             frog_index = 0
             return frog_index
+        
+        def update_frog(self):
+            if self.jump < 20 and self.move == 1:
+                self.rect.y -= 6
+                
+            if self.jump < 20 and self.move == 2:
+             
+                self.rect.x += 6
+            if self.jump < 20 and self.move == 3:
+               
+                self.rect.y += 6
+            if self.jump < 20 and self.move == 4:
+                
+                self.rect.x -= 6
 
+            
+            
             
 
 
     # Main game loop
     running = True
     
+    frog = Frog()
+    gator = Gator()
+
+    
+
     sprite_rect = frog_sprites[0].get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     
     pygame.math.Vector2(1, 0)
@@ -97,7 +144,7 @@ def main():
     
     while running:
         screen.fill((0, 0, 139))  # Clear screen with deep blue
-
+        Gator.gator_update(gator)
         # Update animation every few frames
         frame_count += 1
         
@@ -106,17 +153,36 @@ def main():
                 frog_index = (frog_index + 1) % len(frog_sprites)
             allig_index = (allig_index + 1) % len(allig_sprites)
         # Get the current sprite and display it in the middle of the screen
-
+        frog.jump += 0.1
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
                 Frog.frog_jump()
                 frog_index = 0
 
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP] and frog.jump > 21 :
+            frog.jump= 19
+            frog.move = 1
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RIGHT] and frog.jump > 21 :
+            frog.jump= 19
+            frog.move = 2
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_DOWN] and frog.jump > 21 :
+            frog.jump= 19
+            frog.move = 3
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and frog.jump > 21 :
+            frog.jump= 19
+            frog.move = 4
+                
+        Frog.update_frog(frog)
+
         
-        screen.blit(frog_sprites[frog_index], sprite_rect)
+        screen.blit(frog_sprites[frog_index], frog.rect)
 
         composed_alligator = draw_alligator(allig_sprites, allig_index)
-        screen.blit(composed_alligator,  sprite_rect.move(0, 100))
+        screen.blit(composed_alligator,  gator.rect)
 
         screen.blit(log,  sprite_rect.move(0, -100))
 
