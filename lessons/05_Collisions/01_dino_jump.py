@@ -60,7 +60,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.y = HEIGHT - OBSTACLE_HEIGHT - 10
 
         self.explosion = pygame.image.load(images_dir / "explosion1.gif")
-        self.cactus = pygame.image.load(images_dir / "cactus_9.png")
+        self.cactus = pygame.image.load(images_dir / "cactus_10.png")
 
         self.image = self.cactus
         self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
@@ -216,17 +216,17 @@ def game_loop():
                 collider[0].explode()
         
             # Draw everything
-            screen.fill(WHITE)
+            screen.fill("red")
             #pygame.draw.rect(screen, BLUE, player)
             obstacles.draw(screen)
             player_group.draw(screen)
 
             # Display obstacle count
-            obstacle_text = font.render(f"Obstacles: {passedobj}", True, BLACK)
+            obstacle_text = font.render(f"days since job: {passedobj}", True, BLACK)
             screen.blit(obstacle_text, (10, 10))
             if passedobj > hiscore:
                 hiscore = passedobj
-            obstacle_text = font.render(f"HIGHSCORE: {hiscore}", True, 'gold')
+            obstacle_text = font.render(f"most jobs avoided highscore: {hiscore}", True, 'gold')
             screen.blit(obstacle_text, (10, 40))
 
         
@@ -259,12 +259,13 @@ def game_loop():
 
 class Button():
     def __init__(self, butx, buty, butwid, buthigh, butcolor, buttext, buttxtcolor):
-        self.butx = 220
+        self.butx = -200
         self.buty = 100
         self.butwid = 60
-        self.buthigh = 150
-        self.butcolor = GREY
-        self.buttext = 'Retry'
+        self.buthigh = 700
+        self.butcolor = "green"
+        self.buttext = 'you got employed! ' \
+        'click to retry'
         self.buttxtcolor = BLACK
 
     def button_draw(self):

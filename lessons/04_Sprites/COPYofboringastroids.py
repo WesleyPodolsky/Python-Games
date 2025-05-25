@@ -259,6 +259,10 @@ if __name__ == "__main__":
         settings, position=(settings.width // 2, settings.height // 2)
     )
 
+
+
+
+
     game.add(spaceship)
     game.add(alienSpaceship)
     game.run()
