@@ -190,8 +190,8 @@ def main():
                 
         Frog.update_frog(frog)
 
-        
-        screen.blit(frog_sprites[frog_index], frog.rect)
+        frog2x = pygame.transform.scale2x(frog_sprites[frog_index])
+        screen.blit(frog2x, frog.rect)
 
         composed_alligator = draw_alligator(allig_sprites, allig_index)
         screen.blit(composed_alligator,  (gator.rect.x-120, gator.rect.y, 10, 10))
