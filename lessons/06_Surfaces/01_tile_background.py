@@ -11,7 +11,7 @@ pygame.init()
 from pathlib import Path
 assets = Path(__file__).parent / 'images'
 BLUE = (0, 0, 255)
-colors = ['blue','red', 'yellow', 'green', 'pink', 'orange']
+colors = ['black','white', 'black', 'white', 'black', 'white']
 # Set up display
 screen_width = 600
 screen_height = 600

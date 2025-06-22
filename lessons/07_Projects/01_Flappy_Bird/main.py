@@ -59,8 +59,8 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.x = WIDTH
         self.rect.y = HEIGHT - OBSTACLE_HEIGHT - 10
 
-        self.explosion = pygame.image.load(images_dir / "pipe-green.png")
-        self.cactus = pygame.image.load(images_dir / "pipe-green.png")
+        self.explosion = pygame.iimagemage.load(images_dir / "pipe-green.png")
+        self.cactus = pygame..load(images_dir / "pipe-green.png")
 
         self.image = self.cactus
         self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
