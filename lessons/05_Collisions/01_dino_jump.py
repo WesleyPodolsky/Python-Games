@@ -205,6 +205,8 @@ def game_loop():
             if pygame.time.get_ticks() - last_obstacle_time > 500:
                 last_obstacle_time = pygame.time.get_ticks()
                 obstacle_count += add_obstacle(obstacles)
+
+            
             
                     
             
